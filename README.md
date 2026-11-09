@@ -25,7 +25,7 @@ Hit a hotkey from any app, type a few letters of a site you've been to, press <k
 | You type | You get |
 | --- | --- |
 | `you` | youtube.com |
-| `t3.ch` | t3.chat |
+| `cla` | claude.ai |
 | `gm` | Gmail |
 | `habr.com`, `localhost:3000` | opened directly |
 | `how to cook rice` | Google search |
@@ -33,7 +33,7 @@ Hit a hotkey from any app, type a few letters of a site you've been to, press <k
 ## Features
 
 - **One step.** The best guess is already selected; <kbd>Enter</kbd> does the right thing. Web search is always the next item.
-- **Ranks like an address bar.** Address prefix beats a word match beats a substring; ties go to the sites you visit and type most, and visited recently. Pages of one site collapse into the site itself, so `t3.ch` lands on `t3.chat/`, not on some deep page.
+- **Ranks like an address bar.** Address prefix beats a word match beats a substring; ties go to the sites you visit and type most, and visited recently. Pages of one site collapse into the site itself, so `cla` lands on `claude.ai/`, not on some old chat.
 - **Zero config.** Finds every installed Chromium browser and profile and uses the one whose history was written most recently — the one you actually use.
 - **Private.** History and favicons are read from the browser's local databases. Nothing is sent anywhere.
 
