@@ -1,5 +1,5 @@
-# Yandex Browser Changelog
+# Chromium Omnibox Changelog
 
 ## [Initial Version] - {PR_MERGE_DATE}
 
-- Open Site: address-bar style search over Yandex Browser history with direct URL and web search fallback.
+- Open Site: address-bar style search over Chromium browser history (Chrome, Edge, Brave, Yandex, Vivaldi, Chromium) with direct URL and web search fallback.

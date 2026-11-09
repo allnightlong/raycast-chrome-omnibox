@@ -1,8 +1,8 @@
 {
   "$schema": "https://www.raycast.com/schemas/extension.json",
-  "name": "yandex-browser",
-  "title": "Yandex Browser",
-  "description": "Address-bar style search over your Yandex Browser history: type, press Enter, land on the site.",
+  "name": "chromium-omnibox",
+  "title": "Chromium Omnibox",
+  "description": "Address-bar style launcher over your Chromium browser history (Chrome, Edge, Brave, Yandex, Vivaldi): type, press Enter, land on the site.",
   "icon": "icon.png",
   "author": "allnightlong",
   "categories": [
@@ -17,12 +17,46 @@
     {
       "name": "search",
       "title": "Open Site",
-      "subtitle": "Yandex Browser",
+      "subtitle": "Chromium Omnibox",
       "description": "Type part of a site you visited, press Enter to open it. Unknown text goes to search.",
       "mode": "view"
     }
   ],
   "preferences": [
+    {
+      "name": "browser",
+      "title": "Browser",
+      "description": "Browser whose history is searched and which opens the sites.",
+      "type": "dropdown",
+      "required": false,
+      "default": "chrome",
+      "data": [
+        {
+          "title": "Google Chrome",
+          "value": "chrome"
+        },
+        {
+          "title": "Microsoft Edge",
+          "value": "edge"
+        },
+        {
+          "title": "Brave",
+          "value": "brave"
+        },
+        {
+          "title": "Yandex Browser",
+          "value": "yandex"
+        },
+        {
+          "title": "Vivaldi",
+          "value": "vivaldi"
+        },
+        {
+          "title": "Chromium",
+          "value": "chromium"
+        }
+      ]
+    },
     {
       "name": "profile",
       "title": "Profile Folder",

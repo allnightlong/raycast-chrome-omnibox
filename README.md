@@ -1,6 +1,6 @@
-# Yandex Browser for Raycast
+# Chromium Omnibox for Raycast
 
-Address-bar style launcher for Yandex Browser on Windows. Hit a hotkey, type part of a site you've visited, press Enter.
+Address-bar style launcher for Chromium browsers on Windows: Chrome, Edge, Brave, Yandex Browser, Vivaldi, Chromium. Hit a hotkey, type part of a site you've visited, press Enter.
 
 - `you` → youtube.com, `t3.ch` → t3.chat, `gm` → Gmail — learned from your browser history, no aliases to maintain.
 - Something that looks like an address (`habr.com`, `localhost:3000`) opens directly.
@@ -18,9 +18,9 @@ npm run dev
 **From WSL (no Node on Windows):** `npm install && npm run dev:win`. It builds into the Windows profile's
 `.config\raycast\extensions\` and pings Windows Raycast, which picks the extension up in its Development section.
 
-Then in Raycast: Settings → Extensions → Yandex Browser → Open Site → Record Hotkey.
+Then in Raycast: Settings → Extensions → Chromium Omnibox → pick your **Browser**, then Open Site → Record Hotkey.
 
-Preferences: profile folder (`Default`, `Profile 1`, …) and search URL.
+Preferences: browser, profile folder (`Default`, `Profile 1`, …), search URL.
 
 ## Develop
 
