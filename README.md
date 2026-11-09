@@ -15,6 +15,9 @@ npm install
 npm run dev
 ```
 
+**From WSL (no Node on Windows):** `npm install && npm run dev:win`. It builds into the Windows profile's
+`.config\raycast\extensions\` and pings Windows Raycast, which picks the extension up in its Development section.
+
 Then in Raycast: Settings → Extensions → Yandex Browser → Open Site → Record Hotkey.
 
 Preferences: profile folder (`Default`, `Profile 1`, …) and search URL.

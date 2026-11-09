@@ -55,6 +55,7 @@
   "scripts": {
     "build": "ray build -e dist",
     "dev": "ray develop",
+    "dev:win": "HOME=\"$(wslpath \"$(cmd.exe /c 'echo %USERPROFILE%' 2>/dev/null | tr -d '\\r')\")\" ray develop",
     "fix-lint": "ray lint --fix",
     "lint": "ray lint",
     "test": "node --test test/*.test.ts",
