@@ -1,45 +1,71 @@
-import { Action, ActionPanel, closeMainWindow, getPreferenceValues, Icon, List, open, popToRoot } from "@raycast/api";
+import { Action, ActionPanel, closeMainWindow, getApplications, Icon, List, open, popToRoot } from "@raycast/api";
 import { useSQL } from "@raycast/utils";
-import { spawn } from "child_process";
-import { existsSync } from "fs";
+import { existsSync, readdirSync, statSync } from "fs";
 import { homedir } from "os";
 import { join } from "path";
 import { useState } from "react";
 import { Row, Suggestion, suggest } from "./rank";
 
-const localAppData = process.env.LOCALAPPDATA ?? join(homedir(), "AppData", "Local");
+const SEARCH_URL = "https://www.google.com/search?q=%s";
 
-// Every Chromium browser on Windows: <base>\User Data\<profile>\History and <base>\Application\<exe>.
-// Keys must match the "browser" dropdown values in package.json.
-const BROWSERS: Record<string, { base: string[]; exe: string }> = {
-  chrome: { base: ["Google", "Chrome"], exe: "chrome.exe" },
-  edge: { base: ["Microsoft", "Edge"], exe: "msedge.exe" },
-  brave: { base: ["BraveSoftware", "Brave-Browser"], exe: "brave.exe" },
-  yandex: { base: ["Yandex", "YandexBrowser"], exe: "browser.exe" },
-  vivaldi: { base: ["Vivaldi"], exe: "vivaldi.exe" },
-  chromium: { base: ["Chromium"], exe: "chrome.exe" },
-};
+// Chromium "User Data" dir per OS (relative to %LOCALAPPDATA% / ~/Library/Application Support),
+// and the app names Raycast knows the browser by (Start Menu / .app name).
+type Browser = { names: string[]; win?: string[]; mac?: string[] };
+const BROWSERS: Browser[] = [
+  { names: ["Google Chrome"], win: ["Google", "Chrome", "User Data"], mac: ["Google", "Chrome"] },
+  { names: ["Microsoft Edge"], win: ["Microsoft", "Edge", "User Data"], mac: ["Microsoft Edge"] },
+  {
+    names: ["Brave", "Brave Browser"],
+    win: ["BraveSoftware", "Brave-Browser", "User Data"],
+    mac: ["BraveSoftware", "Brave-Browser"],
+  },
+  {
+    names: ["Yandex", "Yandex Browser", "Яндекс", "Яндекс Браузер"],
+    win: ["Yandex", "YandexBrowser", "User Data"],
+    mac: ["Yandex", "YandexBrowser"],
+  },
+  { names: ["Vivaldi"], win: ["Vivaldi", "User Data"], mac: ["Vivaldi"] },
+  { names: ["Arc"], mac: ["Arc", "User Data"] },
+  { names: ["Chromium"], win: ["Chromium", "User Data"], mac: ["Chromium"] },
+];
 
-const historyPath = (browser: string, profile: string) =>
-  join(localAppData, ...BROWSERS[browser].base, "User Data", profile || "Default", "History");
+const isWin = process.platform === "win32";
+const appSupport = isWin
+  ? (process.env.LOCALAPPDATA ?? join(homedir(), "AppData", "Local"))
+  : join(homedir(), "Library", "Application Support");
 
-// Per-user install first, then machine-wide.
-const browserExe = (browser: string) =>
-  [
-    localAppData,
-    process.env.ProgramFiles ?? "C:\\Program Files",
-    process.env["ProgramFiles(x86)"] ?? "C:\\Program Files (x86)",
-  ]
-    .map((dir) => join(dir, ...BROWSERS[browser].base, "Application", BROWSERS[browser].exe))
-    .find((p) => existsSync(p));
+/**
+ * The History file of the browser + profile you actually use: every installed Chromium
+ * browser and profile (Default, Profile 1, …) is a candidate, the most recently written wins.
+ * A fixed priority list would always pick Edge on Windows, since it's preinstalled.
+ */
+function detect(): { browser: Browser; history: string } | undefined {
+  const found = BROWSERS.flatMap((browser) => {
+    const rel = isWin ? browser.win : browser.mac;
+    if (!rel) return [];
+    const userData = join(appSupport, ...rel);
+    let profiles: string[];
+    try {
+      profiles = readdirSync(userData);
+    } catch {
+      return [];
+    }
+    return profiles
+      .map((p) => join(userData, p, "History"))
+      .filter((history) => existsSync(history))
+      .map((history) => ({ browser, history, mtime: statSync(history).mtimeMs }));
+  });
+  return found.sort((a, b) => b.mtime - a.mtime)[0];
+}
 
-async function openInBrowser(browser: string, url: string) {
-  const exe = browserExe(browser);
-  if (exe) {
-    // execFile-style args: no shell, so the URL is never parsed as a command.
-    spawn(exe, [url], { detached: true, stdio: "ignore" }).unref();
-  } else {
-    await open(url);
+// Like the Zen reference: let the OS resolve the app by name instead of hardcoding an executable.
+async function openInBrowser(browser: Browser | undefined, url: string) {
+  const names = new Set(browser?.names.map((n) => n.toLowerCase()));
+  const app = (await getApplications()).find((a) => names.has(a.name.toLowerCase()));
+  try {
+    await open(url, app);
+  } catch {
+    await open(url); // app found but refused the URL: system default browser still gets the user there
   }
   await closeMainWindow({ clearRootSearch: true });
   await popToRoot();
@@ -63,26 +89,32 @@ function candidatesSql(query: string): string {
 const icon = (s: Suggestion) =>
   s.kind === "search" ? Icon.MagnifyingGlass : s.kind === "url" ? Icon.Link : Icon.Globe;
 
+const detected = detect();
+
 export default function Command() {
-  const { browser, profile, searchUrl } = getPreferenceValues<Preferences.Search>();
   const [query, setQuery] = useState("");
-  const dbPath = historyPath(browser, profile);
-  const installed = existsSync(dbPath);
-  const { data, isLoading, permissionView } = useSQL<Row>(dbPath, candidatesSql(query), { execute: installed });
+  const { data, isLoading, permissionView } = useSQL<Row>(detected?.history ?? "", candidatesSql(query), {
+    execute: !!detected,
+  });
 
   if (permissionView) return permissionView;
 
-  const items = suggest(query, data ?? [], searchUrl || "https://www.google.com/search?q=%s");
+  const items = suggest(query, data ?? [], SEARCH_URL);
 
   return (
     <List
       filtering={false}
       onSearchTextChange={setQuery}
-      isLoading={installed && isLoading}
+      isLoading={!!detected && isLoading}
       searchBarPlaceholder="Site or search query"
       throttle
     >
-      {!installed && <List.EmptyView title="Browser history not found" description={dbPath} />}
+      {!detected && (
+        <List.EmptyView
+          title="No Chromium browser history found"
+          description={BROWSERS.map((b) => b.names[0]).join(", ")}
+        />
+      )}
       {items.map((s) => (
         <List.Item
           key={`${s.kind}:${s.url}`}
@@ -91,7 +123,11 @@ export default function Command() {
           subtitle={s.subtitle}
           actions={
             <ActionPanel>
-              <Action title="Open in Browser" icon={Icon.Globe} onAction={() => openInBrowser(browser, s.url)} />
+              <Action
+                title={`Open in ${detected?.browser.names[0] ?? "Browser"}`}
+                icon={Icon.Globe}
+                onAction={() => openInBrowser(detected?.browser, s.url)}
+              />
               <Action.CopyToClipboard title="Copy URL" content={s.url} />
             </ActionPanel>
           }
