@@ -2,11 +2,11 @@
   "$schema": "https://www.raycast.com/schemas/extension.json",
   "name": "chromium-omnibox",
   "title": "Chromium Omnibox",
-  "description": "Address-bar style launcher over your Chromium browser history (Chrome, Edge, Brave, Yandex, Vivaldi, Arc): type, press Enter, land on the site. Zero config.",
+  "description": "Open any site from your Chromium browser history in one keystroke, like the browser address bar.",
   "icon": "icon.png",
   "author": "allnightlong",
   "categories": [
-    "Applications",
+    "Web",
     "Productivity"
   ],
   "platforms": [
@@ -18,9 +18,25 @@
     {
       "name": "search",
       "title": "Open Site",
-      "subtitle": "Chromium Omnibox",
-      "description": "Type part of a site you visited, press Enter to open it. Unknown text goes to search.",
-      "mode": "view"
+      "description": "Type part of a site you visited and press Enter; addresses open directly, anything else is searched on Google.",
+      "mode": "view",
+      "keywords": [
+        "browser",
+        "history",
+        "omnibox",
+        "address bar",
+        "url",
+        "chrome",
+        "edge",
+        "brave",
+        "yandex",
+        "vivaldi",
+        "opera",
+        "arc",
+        "dia",
+        "comet",
+        "helium"
+      ]
     }
   ],
   "dependencies": {
