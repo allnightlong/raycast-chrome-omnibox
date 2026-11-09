@@ -1,6 +1,6 @@
 # Chromium Omnibox for Raycast
 
-Address-bar style launcher for Chromium browsers on Windows and macOS: Chrome, Edge, Brave, Yandex Browser, Vivaldi, Arc, Chromium. Hit a hotkey, type part of a site you've visited, press Enter.
+Address-bar style launcher for Chromium browsers on Windows and macOS: Chrome (Stable/Beta/Dev/Canary), Chromium, Edge, Brave, Yandex Browser, Vivaldi, Opera, Opera GX, Arc, Dia, Comet, Helium, ChatGPT Atlas, Cốc Cốc, Iridium, 360, QQ Browser, Sogou. Hit a hotkey, type part of a site you've visited, press Enter.
 
 - `you` → youtube.com, `t3.ch` → t3.chat, `gm` → Gmail — learned from your browser history, no aliases to maintain.
 - Something that looks like an address (`habr.com`, `localhost:3000`) opens directly.

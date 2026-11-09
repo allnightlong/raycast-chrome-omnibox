@@ -19,31 +19,53 @@ import { Row, Suggestion, suggest } from "./rank";
 
 const SEARCH_URL = "https://www.google.com/search?q=%s";
 
-// Chromium "User Data" dir per OS (relative to %LOCALAPPDATA% / ~/Library/Application Support),
-// and the app names Raycast knows the browser by (Start Menu / .app name).
-type Browser = { names: string[]; win?: string[]; mac?: string[] };
+// Chromium "User Data" dir per OS, relative to the home folder, and the app names Raycast knows the browser by.
+// Paths: HackBrowserData's browser table (github.com/moonD4rk/HackBrowserData, internal/browser/table.go)
+// and the Store extensions for Dia, Comet, Helium and Browser History. Unknown app name = system default browser.
+// ponytail: Arc on Windows is an MSIX package (Packages/TheBrowserCompany.Arc_*), needs a glob; skipped, Arc sunsets 2026-12.
+type Browser = { names: string[]; win?: string; mac?: string };
+const L = "AppData/Local/";
+const R = "AppData/Roaming/";
+const M = "Library/Application Support/";
 const BROWSERS: Browser[] = [
-  { names: ["Google Chrome"], win: ["Google", "Chrome", "User Data"], mac: ["Google", "Chrome"] },
-  { names: ["Microsoft Edge"], win: ["Microsoft", "Edge", "User Data"], mac: ["Microsoft Edge"] },
+  { names: ["Google Chrome"], win: L + "Google/Chrome/User Data", mac: M + "Google/Chrome" },
+  { names: ["Google Chrome Beta"], win: L + "Google/Chrome Beta/User Data", mac: M + "Google/Chrome Beta" },
+  { names: ["Google Chrome Dev"], win: L + "Google/Chrome Dev/User Data", mac: M + "Google/Chrome Dev" },
+  { names: ["Google Chrome Canary"], win: L + "Google/Chrome SxS/User Data", mac: M + "Google/Chrome Canary" },
+  { names: ["Chromium"], win: L + "Chromium/User Data", mac: M + "Chromium" },
+  { names: ["Microsoft Edge"], win: L + "Microsoft/Edge/User Data", mac: M + "Microsoft Edge" },
   {
     names: ["Brave", "Brave Browser"],
-    win: ["BraveSoftware", "Brave-Browser", "User Data"],
-    mac: ["BraveSoftware", "Brave-Browser"],
+    win: L + "BraveSoftware/Brave-Browser/User Data",
+    mac: M + "BraveSoftware/Brave-Browser",
   },
   {
     names: ["Yandex", "Yandex Browser", "Яндекс", "Яндекс Браузер"],
-    win: ["Yandex", "YandexBrowser", "User Data"],
-    mac: ["Yandex", "YandexBrowser"],
+    win: L + "Yandex/YandexBrowser/User Data",
+    mac: M + "Yandex/YandexBrowser",
   },
-  { names: ["Vivaldi"], win: ["Vivaldi", "User Data"], mac: ["Vivaldi"] },
-  { names: ["Arc"], mac: ["Arc", "User Data"] },
-  { names: ["Chromium"], win: ["Chromium", "User Data"], mac: ["Chromium"] },
+  { names: ["Vivaldi"], win: L + "Vivaldi/User Data", mac: M + "Vivaldi" },
+  // Opera keeps a single profile directly in this dir (no Default/ subfolder); detect() handles both layouts.
+  { names: ["Opera", "Opera Browser"], win: R + "Opera Software/Opera Stable", mac: M + "com.operasoftware.Opera" },
+  {
+    names: ["Opera GX", "Opera GX Browser"],
+    win: R + "Opera Software/Opera GX Stable",
+    mac: M + "com.operasoftware.OperaGX",
+  },
+  { names: ["Arc"], mac: M + "Arc/User Data" },
+  { names: ["Dia"], mac: M + "Dia/User Data" },
+  { names: ["Comet"], win: L + "Perplexity/Comet/User Data", mac: M + "Comet" },
+  { names: ["Helium"], win: L + "imput/Helium/User Data", mac: M + "net.imput.helium" },
+  { names: ["ChatGPT Atlas"], mac: M + "com.openai.atlas/browser-data/host" },
+  { names: ["Cốc Cốc", "CocCoc"], win: L + "CocCoc/Browser/User Data", mac: M + "Coccoc" },
+  { names: ["Iridium"], mac: M + "Iridium" },
+  { names: ["360 Speed X", "360极速浏览器X"], win: L + "360ChromeX/Chrome/User Data" },
+  { names: ["360 Speed", "360极速浏览器"], win: L + "360chrome/Chrome/User Data" },
+  { names: ["QQ Browser", "QQ浏览器"], win: L + "Tencent/QQBrowser/User Data" },
+  { names: ["Sogou Explorer", "搜狗高速浏览器"], win: L + "Sogou/SogouExplorer/User Data" },
 ];
 
 const isWin = process.platform === "win32";
-const appSupport = isWin
-  ? (process.env.LOCALAPPDATA ?? join(homedir(), "AppData", "Local"))
-  : join(homedir(), "Library", "Application Support");
 
 /**
  * The browser + profile you actually use: every installed Chromium browser and profile
@@ -54,15 +76,14 @@ function detect(): { browser: Browser; dir: string } | undefined {
   const found = BROWSERS.flatMap((browser) => {
     const rel = isWin ? browser.win : browser.mac;
     if (!rel) return [];
-    const userData = join(appSupport, ...rel);
+    const userData = join(homedir(), ...rel.split("/"));
     let profiles: string[];
     try {
       profiles = readdirSync(userData);
     } catch {
       return [];
     }
-    return profiles
-      .map((p) => join(userData, p))
+    return [userData, ...profiles.map((p) => join(userData, p))]
       .filter((dir) => existsSync(join(dir, "History")))
       .map((dir) => ({ browser, dir, mtime: statSync(join(dir, "History")).mtimeMs }));
   });
