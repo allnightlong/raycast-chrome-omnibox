@@ -2,3 +2,4 @@
 /dist
 raycast-env.d.ts
 .DS_Store
+.idea/
