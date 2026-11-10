@@ -1,26 +1,22 @@
-<p align="center">
-  <img src="assets/icon.png" width="128" height="128" alt="Chrome Omnibox icon">
-</p>
+<img src="assets/icon.png" width="128" height="128" alt="Chrome Omnibox icon">
 
-<h1 align="center">Chrome Omnibox</h1>
+# Chrome Omnibox
 
-<p align="center">
-  Your browser's address bar, one hotkey away — in <a href="https://www.raycast.com">Raycast</a>.
-</p>
+Your browser's address bar, one hotkey away — in [Raycast](https://www.raycast.com).
 
-<p align="center">
-  <a href="https://github.com/allnightlong/raycast-chrome-omnibox/actions/workflows/ci.yml"><img src="https://github.com/allnightlong/raycast-chrome-omnibox/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
-  <img src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS-blue" alt="Platforms: Windows, macOS">
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/allnightlong/raycast-chrome-omnibox" alt="MIT license"></a>
-</p>
+[![CI](https://github.com/allnightlong/raycast-chrome-omnibox/actions/workflows/ci.yml/badge.svg)](https://github.com/allnightlong/raycast-chrome-omnibox/actions/workflows/ci.yml)
+![Platforms: Windows and macOS](https://img.shields.io/badge/platform-Windows%20%7C%20macOS-blue)
+[![MIT license](https://img.shields.io/github/license/allnightlong/raycast-chrome-omnibox)](LICENSE)
 
 <!-- Uncomment once the extension is live in the Store:
-<p align="center">
-  <a href="https://www.raycast.com/allnightlong/chrome-omnibox"><img src="https://www.raycast.com/allnightlong/chrome-omnibox/install_button@2x.png?v=1.1" height="64" alt="Install Chrome Omnibox in Raycast"></a>
-</p>
+[![Install Chrome Omnibox in Raycast](https://www.raycast.com/allnightlong/chrome-omnibox/install_button@2x.png?v=1.1)](https://www.raycast.com/allnightlong/chrome-omnibox)
 -->
 
 Hit a hotkey from any app, type a few letters of a site you've been to, press <kbd>Enter</kbd> — it opens in your browser. No aliases, no quicklinks to maintain: everything is learned from your browser history.
+
+![While working in Warp, press Control-Option-Command-L, type ray to see the Raycast history suggestion, and press Enter to open the site in Chrome](media/workflow.gif)
+
+Recorded with a separate Chrome demo profile and sample history.
 
 | You type | You get |
 | --- | --- |
@@ -37,6 +33,14 @@ Hit a hotkey from any app, type a few letters of a site you've been to, press <k
 - **Zero config.** Works with Chrome and every other Chromium browser: finds each installed one and profile and uses the one whose history was written most recently — the one you actually use.
 - **Private.** History and favicons are read from the browser's local databases. Nothing is sent anywhere.
 
+## Screenshots
+
+Captured in Raycast on macOS with public-site queries.
+
+| History | Direct address | Web search |
+| --- | --- | --- |
+| [![Wikipedia history results](media/screenshot-history.png)](media/screenshot-history.png) | [![Open example.com directly](media/screenshot-address.png)](media/screenshot-address.png) | [![Search for how to cook rice](media/screenshot-search.png)](media/screenshot-search.png) |
+
 ## Supported browsers
 
 | | Windows | macOS |
@@ -49,9 +53,27 @@ Hit a hotkey from any app, type a few letters of a site you've been to, press <k
 
 Missing yours? Open an issue with the browser name and its `chrome://version` → *Profile Path*.
 
-## Setup
+## Recommended setup: launch directly with a hotkey
 
-Assign a hotkey: Raycast Settings → Extensions → Chrome Omnibox → Open Site → Record Hotkey. <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>Space</kbd> (Windows) or <kbd>⌥</kbd>+<kbd>Space</kbd> (macOS) rarely clash with other apps.
+Assign a **global hotkey to Open Site itself**. This opens the extension from any app and bypasses Raycast's main search dialog: **hotkey → type a site or address → Enter → you're there**. No need to open Raycast and find the command first.
+
+1. Open **Raycast Settings → Shortcuts**, search for **Open Site**, and choose the command under **Chrome Omnibox**. In older Raycast versions, use **Extensions → Chrome Omnibox → Open Site**.
+2. Click **Record Hotkey** and press your chosen shortcut.
+3. Return to any app, such as Warp, and try it.
+
+Suggested macOS shortcuts:
+
+| Shortcut | When to choose it |
+| --- | --- |
+| <kbd>⌃</kbd> + <kbd>⌥</kbd> + <kbd>⌘</kbd> + <kbd>L</kbd> | Recommended starting point, used in the showcase: L for Link, separate from the usual Space-based launchers. |
+| Double-tap right <kbd>⌥</kbd> | A one-finger alternative if another command isn't already using it. |
+| <kbd>Hyper</kbd> + <kbd>L</kbd> | If you already have a Hyper key configured; L for Link. |
+
+Keep the command's hotkey separate from Raycast's launcher hotkey. <kbd>⌥</kbd> + <kbd>Space</kbd> opens Raycast by default; macOS uses <kbd>⌘</kbd> + <kbd>Space</kbd> for Spotlight, <kbd>⌃</kbd> + <kbd>Space</kbd> and <kbd>⌃</kbd> + <kbd>⌥</kbd> + <kbd>Space</kbd> for input-source switching, and <kbd>⌃</kbd> + <kbd>⌘</kbd> + <kbd>Space</kbd> for emoji. Check your own app shortcuts too; no combination is universally free.
+
+On Windows, try <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>Space</kbd> if it is free in your setup.
+
+See [Raycast's hotkey guide](https://manual.raycast.com/command-aliases-and-hotkeys) and [Apple's shortcut reference](https://support.apple.com/en-us/102650).
 
 ## Development
 
