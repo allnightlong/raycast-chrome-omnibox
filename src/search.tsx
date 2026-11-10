@@ -198,7 +198,7 @@ export default function Command() {
     >
       {!detected && (
         <List.EmptyView
-          title="No Chromium browser history found"
+          title="No Chrome or Chromium browser history found"
           description={BROWSERS.map((b) => b.names[0]).join(", ")}
         />
       )}

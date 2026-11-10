@@ -1,4 +1,4 @@
-# Chromium Omnibox Changelog
+# Chrome Omnibox Changelog
 
 ## [Initial Version] - {PR_MERGE_DATE}
 

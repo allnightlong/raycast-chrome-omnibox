@@ -1,22 +1,22 @@
 <p align="center">
-  <img src="assets/icon.png" width="128" height="128" alt="Chromium Omnibox icon">
+  <img src="assets/icon.png" width="128" height="128" alt="Chrome Omnibox icon">
 </p>
 
-<h1 align="center">Chromium Omnibox</h1>
+<h1 align="center">Chrome Omnibox</h1>
 
 <p align="center">
   Your browser's address bar, one hotkey away — in <a href="https://www.raycast.com">Raycast</a>.
 </p>
 
 <p align="center">
-  <a href="https://github.com/allnightlong/raycast-chromium-omnibox/actions/workflows/ci.yml"><img src="https://github.com/allnightlong/raycast-chromium-omnibox/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://github.com/allnightlong/raycast-chrome-omnibox/actions/workflows/ci.yml"><img src="https://github.com/allnightlong/raycast-chrome-omnibox/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <img src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS-blue" alt="Platforms: Windows, macOS">
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/allnightlong/raycast-chromium-omnibox" alt="MIT license"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/allnightlong/raycast-chrome-omnibox" alt="MIT license"></a>
 </p>
 
 <!-- Uncomment once the extension is live in the Store:
 <p align="center">
-  <a href="https://www.raycast.com/allnightlong/chromium-omnibox"><img src="https://www.raycast.com/allnightlong/chromium-omnibox/install_button@2x.png?v=1.1" height="64" alt="Install Chromium Omnibox in Raycast"></a>
+  <a href="https://www.raycast.com/allnightlong/chrome-omnibox"><img src="https://www.raycast.com/allnightlong/chrome-omnibox/install_button@2x.png?v=1.1" height="64" alt="Install Chrome Omnibox in Raycast"></a>
 </p>
 -->
 
@@ -34,7 +34,7 @@ Hit a hotkey from any app, type a few letters of a site you've been to, press <k
 
 - **One step.** The best guess is already selected; <kbd>Enter</kbd> does the right thing. Web search is always the next item.
 - **Ranks like an address bar.** Address prefix beats a word match beats a substring; ties go to the sites you visit and type most, and visited recently. Pages of one site collapse into the site itself, so `cla` lands on `claude.ai/`, not on some old chat.
-- **Zero config.** Finds every installed Chromium browser and profile and uses the one whose history was written most recently — the one you actually use.
+- **Zero config.** Works with Chrome and every other Chromium browser: finds each installed one and profile and uses the one whose history was written most recently — the one you actually use.
 - **Private.** History and favicons are read from the browser's local databases. Nothing is sent anywhere.
 
 ## Supported browsers
@@ -51,7 +51,7 @@ Missing yours? Open an issue with the browser name and its `chrome://version` �
 
 ## Setup
 
-Assign a hotkey: Raycast Settings → Extensions → Chromium Omnibox → Open Site → Record Hotkey. <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>Space</kbd> (Windows) or <kbd>⌥</kbd>+<kbd>Space</kbd> (macOS) rarely clash with other apps.
+Assign a hotkey: Raycast Settings → Extensions → Chrome Omnibox → Open Site → Record Hotkey. <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>Space</kbd> (Windows) or <kbd>⌥</kbd>+<kbd>Space</kbd> (macOS) rarely clash with other apps.
 
 ## Development
 

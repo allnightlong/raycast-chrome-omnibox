@@ -1,8 +1,8 @@
 {
   "$schema": "https://www.raycast.com/schemas/extension.json",
-  "name": "chromium-omnibox",
-  "title": "Chromium Omnibox",
-  "description": "Open any site from your Chromium browser history in one keystroke, like the browser address bar.",
+  "name": "chrome-omnibox",
+  "title": "Chrome Omnibox",
+  "description": "Open any site from your Chrome history (or any Chromium browser) in one keystroke, like the browser address bar.",
   "icon": "icon.png",
   "author": "allnightlong",
   "categories": [
@@ -32,7 +32,7 @@
         "yandex",
         "vivaldi",
         "opera",
-        "arc"
+        "chromium"
       ]
     }
   ],
