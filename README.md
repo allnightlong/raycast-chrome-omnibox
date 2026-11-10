@@ -1,4 +1,4 @@
-<h1><img src="assets/icon.png" width="48" height="48" alt=""> Chrome Omnibox</h1>
+<h1><img src="media/header.svg" width="352" height="56" alt="Chrome Omnibox"></h1>
 
 Your browser's address bar, one hotkey away — in [Raycast](https://www.raycast.com).
 
@@ -8,7 +8,7 @@ Your browser's address bar, one hotkey away — in [Raycast](https://www.raycast
 
 Press a hotkey, type a site or address, and press **Enter**. History matches open in your browser; anything else becomes a Google search. No aliases or quicklinks to maintain.
 
-[![Launch Open Site from Warp, type ray, and open Raycast in Chrome](media/workflow.gif)](media/workflow.gif)
+[![Type ray in Open Site and open Raycast in Chrome, with cached favicons shown](media/workflow.gif)](media/workflow.gif)
 
 Recorded with a separate Chrome demo profile and sample history.
 
