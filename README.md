@@ -65,6 +65,8 @@ npm run build
 
 **Windows Raycast, toolchain in WSL:** `npm run dev:win` builds into the Windows profile's `.config\raycast\extensions\` and Windows Raycast picks it up in its Development section — no Node needed on Windows.
 
+**Publishing:** `npm run publish` locally, or Actions → *Publish to Raycast Store* → Run workflow (needs repo secret `RAYCAST_PUBLISH_TOKEN`: classic PAT with `repo` scope). Either way it opens or updates the PR in [raycast/extensions](https://github.com/raycast/extensions).
+
 ## License
 
 [MIT](LICENSE)

@@ -1,0 +1,32 @@
+name: Publish to Raycast Store
+
+# Manual only: Actions → Publish to Raycast Store → Run workflow.
+# Opens/updates the PR in raycast/extensions, same as `npm run publish` locally.
+on: workflow_dispatch
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run lint
+      - run: npm run build
+      - name: Check token
+        env:
+          GITHUB_ACCESS_TOKEN: ${{ secrets.RAYCAST_PUBLISH_TOKEN }}
+        # Without it `ray publish` falls back to the interactive device flow and hangs.
+        run: |
+          [ -n "$GITHUB_ACCESS_TOKEN" ] || { echo "::error::Add repo secret RAYCAST_PUBLISH_TOKEN (classic PAT, scope: repo)"; exit 1; }
+      - run: |
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
+      # ponytail: GITHUB_ACCESS_TOKEN is read by the ray CLI but undocumented; if a release drops it, publish locally.
+      - run: npx ray publish
+        env:
+          GITHUB_ACCESS_TOKEN: ${{ secrets.RAYCAST_PUBLISH_TOKEN }}
