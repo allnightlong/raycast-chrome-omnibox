@@ -26,6 +26,16 @@ jobs:
       - run: |
           git config --global user.name "${{ github.actor }}"
           git config --global user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
+      # On a fresh clone `ray publish` branches off upstream/main instead of the open Store PR branch,
+      # so updating that PR fails (non-fast-forward). Pre-create the clone ray reuses, with the PR branch checked out locally.
+      - name: Reuse Store PR branch
+        env:
+          GITHUB_ACCESS_TOKEN: ${{ secrets.RAYCAST_PUBLISH_TOKEN }}
+        run: |
+          dir="$HOME/.config/raycast/public-extensions-fork"
+          git clone --filter=blob:none --no-checkout "https://oauth2:${GITHUB_ACCESS_TOKEN}@github.com/${{ github.repository_owner }}/raycast-extensions" "$dir"
+          branch="ext/$(jq -r .name package.json)"
+          git -C "$dir" branch "$branch" "origin/$branch" || echo "No $branch yet: first publish"
       # ponytail: GITHUB_ACCESS_TOKEN is read by the ray CLI but undocumented; if a release drops it, publish locally.
       - run: npx ray publish
         env:
