@@ -22,20 +22,6 @@ In **Raycast Settings → Shortcuts**, find **Chrome Omnibox → Open Site** and
 
 Try **⌃⌥⌘L** on macOS (shown above) or **Ctrl+Alt+Space** on Windows. Choose a shortcut that does not conflict with your apps or Raycast's launcher. See [Raycast's hotkey guide](https://manual.raycast.com/command-aliases-and-hotkeys).
 
-## Screenshots
-
-**Find a site from your history**
-
-![Typing r selects Raycast from the demo browser history](media/screenshot-history.png)
-
-**Open an address directly**
-
-![Typing https://www.raycast.com/ selects the direct address, ready to open in Chrome](media/screenshot-address.png)
-
-**Search the web**
-
-![Typing how to cook rice selects a Google search](media/screenshot-search.png)
-
 ## Supported browsers
 
 | | Windows | macOS |
